@@ -1,0 +1,43 @@
+
+
+def encrypt_image(image_path, encryption_key):
+    img = Image.open(image_path)
+    width, height = img.size
+    pixels = img.load()
+
+    for y in range(height):
+        for x in range(width):
+            r, g, b = pixels[x, y]
+            r = (r + encryption_key) % 256
+            g = (g + encryption_key) % 256
+            b = (b + encryption_key) % 256
+            pixels[x, y] = (r, g, b)
+
+    img.save("encrypted_image.png")
+    print("Image encrypted successfully!")
+
+def decrypt_image(encrypted_image_path, encryption_key):
+    img = Image.open(encrypted_image_path)
+    width, height = img.size
+    pixels = img.load()
+
+    for y in range(height):
+        for x in range(width):
+            r, g, b = pixels[x, y]
+            r = (r - encryption_key) % 256
+            g = (g - encryption_key) % 256
+            b = (b - encryption_key) % 256
+            pixels[x, y] = (r, g, b)
+
+    img.save("decrypted_image.png")
+    print("Image decrypted successfully!")
+
+
+image_path = "example_image.png"
+encryption_key = 50
+
+
+encrypt_image(image_path, encryption_key)
+
+
+decrypt_image("encrypted_image.png", encryption_key)
